@@ -13,12 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (buttonText === 'C') {
           display.value = display.value.slice(0, -1);
         } else if (buttonText === '=') {
-          try {
-            display.value = eval(display.value);
-          } catch (error) {
-            display.value = 'Error';
-          }
-          evaluateOnNextEquals = false;
+          evaluateExpression();
         } else {
           if (button.classList.contains('scientific')) {
             handleScientificOperation(buttonText);
@@ -34,40 +29,53 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
   
+    function evaluateExpression() {
+      try {
+        // Handling factorial operation
+        let expression = display.value.replace(/(\d+)!/g, match => factorial(parseInt(match)));
+        // Implementing BODMAS logic
+        expression = expression.replace('π', Math.PI).replace('e', Math.E);
+        display.value = eval(expression);
+      } catch (error) {
+        display.value = 'Error';
+      }
+      evaluateOnNextEquals = false;
+    }
+  
     function handleScientificOperation(operation) {
       switch (operation) {
         case 'sqrt':
-          display.value = Math.sqrt(parseFloat(display.value));
+          display.value = `Math.sqrt(${display.value})`;
           break;
         case 'deg':
-          display.value = parseFloat(display.value) * (180 / Math.PI);
+          display.value = `(${display.value} * (180 / Math.PI))`;
           break;
         case 'π':
-          display.value += Math.PI.toFixed(5);
+          display.value += 'Math.PI';
           break;
         case '^':
-          display.value += '**'; // Use ** for exponentiation in JavaScript
+          display.value += '**';
           break;
         case 'sin':
-          display.value = Math.sin(parseFloat(display.value));
+          display.value += 'Math.sin((Math.PI / 180) * ';
           break;
         case 'cos':
-          display.value = Math.cos(parseFloat(display.value));
+          display.value += 'Math.cos((Math.PI / 180) * ';
           break;
         case 'tan':
-          display.value = Math.tan(parseFloat(display.value));
+          display.value += 'Math.tan((Math.PI / 180) * ';
           break;
         case 'ln':
-          display.value = Math.log(parseFloat(display.value));
+          display.value += 'Math.log(';
           break;
         case 'log':
-          display.value = Math.log10(parseFloat(display.value));
+          display.value += 'Math.log10(';
           break;
         case 'e':
-          display.value += Math.E.toFixed(5);
+          display.value += 'Math.E';
           break;
         case '!':
-          display.value = factorial(parseInt(display.value));
+          display.value += '!';
           break;
         case '.':
           if (!display.value.includes('.')) {
@@ -75,7 +83,13 @@ document.addEventListener('DOMContentLoaded', function() {
           }
           break;
         case '%':
-          display.value = parseFloat(display.value) / 100;
+          display.value = `(${display.value} / 100)`;
+          break;
+        case '(':
+          display.value += '(';
+          break;
+        case ')':
+          display.value += ')';
           break;
         default:
           break;
@@ -83,15 +97,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   
     function factorial(num) {
-      if (num < 0) return -1;
+      if (num < 0) return 'Error';
       else if (num === 0) return 1;
-      else {
-        let result = 1;
-        for (let i = 1; i <= num; i++) {
-          result *= i;
-        }
-        return result;
-      }
+      else return num * factorial(num - 1);
     }
   });
   
