@@ -4,23 +4,53 @@ document.addEventListener('DOMContentLoaded', function() {
   
     buttons.forEach(button => {
       button.addEventListener('click', function() {
-        const buttonText = button.textContent;
-  
-        if (buttonText === 'AC') {
-          display.value = '';
-        } else if (buttonText === 'C') {
-          display.value = display.value.slice(0, -1);
-        } else if (buttonText === '=') {
-          evaluateExpression();
-        } else {
-          if (button.classList.contains('scientific')) {
-            handleScientificOperation(buttonText);
-          } else {
-            display.value += buttonText;
-          }
-        }
+        handleButtonClick(button.textContent);
       });
     });
+  
+    document.addEventListener('keydown', function(event) {
+      handleKeyPress(event.key);
+    });
+  
+    function handleButtonClick(buttonText) {
+      if (buttonText === 'AC') {
+        display.value = '';
+      } else if (buttonText === 'C') {
+        display.value = display.value.slice(0, -1);
+      } else if (buttonText === '=') {
+        evaluateExpression();
+      } else {
+        if (isScientificOperation(buttonText)) {
+          handleScientificOperation(buttonText);
+        } else {
+          display.value += buttonText;
+        }
+      }
+    }
+  
+    function handleKeyPress(key) {
+      if (key === 'Enter') {
+        evaluateExpression();
+      } else if (key === 'Backspace') {
+        display.value = display.value.slice(0, -1);
+      } else if (key === 'Escape') {
+        display.value = '';
+      } else if (isScientificOperation(key)) {
+        handleScientificOperation(key);
+      } else {
+        if (isNumericOrOperator(key)) {
+          display.value += key;
+        }
+      }
+    }
+  
+    function isScientificOperation(key) {
+      return ['sqrt', 'deg', 'π', '^', 'sin', 'cos', 'tan', 'ln', 'log', 'e', '!'].includes(key);
+    }
+  
+    function isNumericOrOperator(key) {
+      return /[0-9+\-*/().%^]/.test(key);
+    }
   
     function evaluateExpression() {
       try {
