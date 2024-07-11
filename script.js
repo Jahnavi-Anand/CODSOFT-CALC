@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
           display.value += 'Math.sqrt(';
           break;
         case 'deg':
-          display.value += 'deg('; // Note: You might need a deg function to handle degree conversion
+          display.value += 'deg('; 
           break;
         case 'π':
           display.value += 'π';
