@@ -1,4 +1,3 @@
-markdown
 # Scientific Calculator
 
 A web-based scientific calculator built with HTML, CSS, and JavaScript. This calculator supports both basic and advanced mathematical operations, and allows input through both mouse clicks and keyboard.
