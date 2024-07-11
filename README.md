@@ -30,7 +30,7 @@ A web-based scientific calculator built with HTML, CSS, and JavaScript. This cal
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/your-username/scientific-calculator.git
+    git clone https://github.com/Jahnavi-Anand/CODSOFT-CALC.git
     ```
 2. Open `index.html` in your web browser to start using the calculator.
 
